@@ -1,22 +1,31 @@
 package com.ufu.vdata.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
+import java.util.List;
+import java.util.UUID;
+
+@Table(name = "election")
 @Entity
 public class Election {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
+    @Column(name = "name", updatable = true, nullable = false)
     private String name;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "election")
+    private List<Candidate> candidateList;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -28,5 +37,11 @@ public class Election {
         this.name = name;
     }
 
+    public List<Candidate> getCandidateList() {
+        return candidateList;
+    }
 
+    public void setCandidateList(List<Candidate> candidateList) {
+        this.candidateList = candidateList;
+    }
 }

@@ -4,12 +4,10 @@ import com.ufu.vdata.entity.Election;
 import com.ufu.vdata.repository.ElectionListRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value= "/api/elections")
@@ -30,12 +28,12 @@ class ElectionListController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value="/{electionId}")
-    Election getElection(@PathVariable Long electionId) {
+    Election getElection(@PathVariable UUID electionId) {
         return electionListRepository.findById(electionId).orElseThrow(() -> new ObjectNotFoundException(electionId, "election"));
     }
 
     @RequestMapping(method = RequestMethod.PUT, value="/{electionId}")
-    Election editElection(@PathVariable Long electionId, @RequestBody Election newElection) {
+    Election editElection(@PathVariable UUID electionId, @RequestBody Election newElection) {
         return electionListRepository.findById(electionId)
                 .map(election -> {
                         election.setName(newElection.getName());
@@ -45,7 +43,7 @@ class ElectionListController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value="/{electionId}")
-    void deleteElection(@PathVariable Long electionId) {
+    void deleteElection(@PathVariable UUID electionId) {
         electionListRepository.deleteById(electionId);
     }
 
