@@ -3,8 +3,10 @@ package com.ufu.vdata.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -35,9 +37,9 @@ public class Candidate {
     @Column(name = "document_type", updatable = true, nullable = false, length = 50)
     private String documentType;
     @Column(name = "document_number", updatable = true, nullable = false)
-    private BigInteger documentNumber;
-    @Column(name = "inn", updatable = true, nullable = false)
-    private Long inn;
+    private String documentNumber;
+    @Column(name = "inn", updatable = true, nullable = false, length = 12)
+    private String inn;
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
     private List<Income> incomeList;
@@ -125,19 +127,19 @@ public class Candidate {
         this.documentType = documentType;
     }
 
-    public BigInteger getDocumentNumber() {
+    public String getDocumentNumber() {
         return documentNumber;
     }
 
-    public void setDocumentNumber(BigInteger documentNumber) {
+    public void setDocumentNumber(String documentNumber) {
         this.documentNumber = documentNumber;
     }
 
-    public Long getInn() {
+    public String getInn() {
         return inn;
     }
 
-    public void setInn(Long inn) {
+    public void setInn(String inn) {
         this.inn = inn;
     }
 

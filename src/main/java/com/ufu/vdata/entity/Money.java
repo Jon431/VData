@@ -22,8 +22,8 @@ public class Money {
     private String bankName;
     @Column(name = "bank_address", updatable = true, nullable = false)
     private String bankAddress;
-    @Column(name = "bank_account_number", updatable = true, nullable = false)
-    private BigInteger bankAccountNumber;
+    @Column(name = "bank_account_number", updatable = true, nullable = false, length = 50)
+    private String bankAccountNumber;
     @Column(name = "bank_balance", updatable = true, nullable = false)
     private BigDecimal bankBalance;
     @JsonBackReference
@@ -55,11 +55,11 @@ public class Money {
         this.bankAddress = bankAddress;
     }
 
-    public BigInteger getBankAccountNumber() {
+    public String getBankAccountNumber() {
         return bankAccountNumber;
     }
 
-    public void setBankAccountNumber(BigInteger bankAccountNumber) {
+    public void setBankAccountNumber(String bankAccountNumber) {
         this.bankAccountNumber = bankAccountNumber;
     }
 

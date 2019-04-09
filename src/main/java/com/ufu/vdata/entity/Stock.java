@@ -19,12 +19,12 @@ public class Stock {
     private UUID id;
     @Column(name = "company_name", updatable = true, nullable = false)
     private String companyName;
-    @Column(name = "inn", updatable = true, nullable = false)
-    private long inn;
+    @Column(name = "inn", updatable = true, nullable = false, length = 12)
+    private String inn;
     @Column(name = "address", updatable = true, nullable = false)
     private String address;
     @Column(name = "amount", updatable = true, nullable = false)
-    private int amount;
+    private BigDecimal amount;
     @Column(name = "price", updatable = true, nullable = false)
     private BigDecimal price;
     @JsonBackReference
@@ -48,11 +48,11 @@ public class Stock {
         this.companyName = companyName;
     }
 
-    public long getInn() {
+    public String getInn() {
         return inn;
     }
 
-    public void setInn(long inn) {
+    public void setInn(String inn) {
         this.inn = inn;
     }
 
@@ -64,11 +64,11 @@ public class Stock {
         this.address = address;
     }
 
-    public int getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

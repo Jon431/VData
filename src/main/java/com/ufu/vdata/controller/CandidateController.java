@@ -22,13 +22,10 @@ class CandidateController {
 
         else
             return candidateListRepository.findAll();
-
     }
 
     @RequestMapping(method = RequestMethod.POST)
     Candidate createCandidate(@RequestBody Candidate newCandidate) {
-
-
         return candidateListRepository.save(newCandidate);
     }
 

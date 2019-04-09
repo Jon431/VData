@@ -21,12 +21,12 @@ public class Sequrities {
     private String sequritiesType;
     @Column(name = "debtor", updatable = true, nullable = false)
     private String debtor;
-    @Column(name = "inn", updatable = true, nullable = false)
-    private long inn;
+    @Column(name = "inn", updatable = true, nullable = false, length = 12)
+    private String inn;
     @Column(name = "address", updatable = true, nullable = false)
     private String address;
     @Column(name = "amount", updatable = true, nullable = false)
-    private int amount;
+    private BigDecimal amount;
     @Column(name = "sequrities_sum", updatable = true, nullable = false)
     private BigDecimal sequritiesSum;
     @JsonBackReference
@@ -58,11 +58,11 @@ public class Sequrities {
         this.debtor = debtor;
     }
 
-    public long getInn() {
+    public String getInn() {
         return inn;
     }
 
-    public void setInn(long inn) {
+    public void setInn(String inn) {
         this.inn = inn;
     }
 
@@ -74,11 +74,11 @@ public class Sequrities {
         this.address = address;
     }
 
-    public int getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

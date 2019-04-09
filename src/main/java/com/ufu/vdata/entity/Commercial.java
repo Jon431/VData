@@ -20,7 +20,7 @@ public class Commercial {
     @Column(name = "commercial_name", updatable = true, nullable = false)
     private String commercialName;
     @Column(name = "inn", updatable = true, nullable = false)
-    private long inn;
+    private String inn;
     @Column(name = "address", updatable = true, nullable = false)
     private String address;
     @Column(name = "commercial_share", updatable = true, nullable = false)
@@ -46,11 +46,11 @@ public class Commercial {
         this.commercialName = commercialName;
     }
 
-    public long getInn() {
+    public String getInn() {
         return inn;
     }
 
-    public void setInn(long inn) {
+    public void setInn(String inn) {
         this.inn = inn;
     }
 
