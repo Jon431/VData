@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(value= "/api/elections")
-class ElectionListController {
+class ElectionController {
 
     @Autowired
     ElectionListRepository electionListRepository;

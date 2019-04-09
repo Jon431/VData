@@ -1,5 +1,6 @@
 package com.ufu.vdata.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -26,6 +27,7 @@ public class Request {
     private String fileOutLink;
     @Column(name = "file_in_link", updatable = true, nullable = false)
     private String fileInLink;
+    @JsonBackReference
     @JoinColumn(name = "candidate", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Candidate candidate;

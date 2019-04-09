@@ -1,5 +1,6 @@
 package com.ufu.vdata.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -25,6 +26,7 @@ public class Money {
     private BigInteger bankAccountNumber;
     @Column(name = "bank_balance", updatable = true, nullable = false)
     private BigDecimal bankBalance;
+    @JsonBackReference
     @JoinColumn(name = "candidate_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Candidate candidate;

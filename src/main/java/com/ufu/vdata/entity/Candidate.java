@@ -1,11 +1,15 @@
 package com.ufu.vdata.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Table(name = "candidate")
@@ -27,6 +31,7 @@ public class Candidate {
     @Column(name = "income_year", updatable = true, nullable = false)
     private short incomeYear;
     @Column(name = "estate_date", updatable = true, nullable = false)
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date estateDate;
     @Column(name = "document_type", updatable = true, nullable = false, length = 50)
     private String documentType;
@@ -34,25 +39,34 @@ public class Candidate {
     private BigInteger documentNumber;
     @Column(name = "inn", updatable = true, nullable = false)
     private Long inn;
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
     private List<Income> incomeList;
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
     private List<Request> requestList;
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
     private List<Sequrities> sequritiesList;
     @JoinColumn(name = "election_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Election election;
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
     private List<Commercial> commercialList;
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
     private List<Money> moneyList;
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
     private List<Estate> estateList;
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
     private List<DocumentIn> documentInList;
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
     private List<Transport> transportList;
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
     private List<Stock> stockList;
 
@@ -206,5 +220,18 @@ public class Candidate {
 
     public void setStockList(List<Stock> stockList) {
         this.stockList = stockList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Candidate candidate = (Candidate) o;
+        return id.equals(candidate.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

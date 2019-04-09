@@ -1,5 +1,6 @@
 package com.ufu.vdata.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class Transport {
     private String model;
     @Column(name = "transport_year", updatable = true, nullable = false)
     private short trasportYear;
+    @JsonBackReference
     @JoinColumn(name = "candidate_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Candidate candidate;

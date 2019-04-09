@@ -1,5 +1,6 @@
 package com.ufu.vdata.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -21,6 +22,7 @@ public class DocumentIn {
     private Short status;
     @Column(name = "file_link", updatable = true, nullable = false)
     private String fileLink;
+    @JsonBackReference
     @JoinColumn(name = "candidate", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Candidate candidate;

@@ -1,9 +1,12 @@
 package com.ufu.vdata.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Table(name = "election")
@@ -18,6 +21,7 @@ public class Election {
     private UUID id;
     @Column(name = "name", updatable = true, nullable = false)
     private String name;
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "election")
     private List<Candidate> candidateList;
 
@@ -44,4 +48,22 @@ public class Election {
     public void setCandidateList(List<Candidate> candidateList) {
         this.candidateList = candidateList;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Election election = (Election) o;
+        return id.equals(election.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    public Election(String id) {
+        this.id = UUID.fromString(id);
+    }
+    public Election() {}
 }

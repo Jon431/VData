@@ -1,5 +1,6 @@
 package com.ufu.vdata.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -24,6 +25,8 @@ public class Commercial {
     private String address;
     @Column(name = "commercial_share", updatable = true, nullable = false)
     private BigDecimal commercialShare;
+    @JsonBackReference
+    @JoinColumn(name = "candidate_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Candidate candidate;
 
