@@ -3,13 +3,13 @@ package com.ufu.vdata.controller;
 import com.ufu.vdata.entity.Candidate;
 import com.ufu.vdata.entity.Election;
 import com.ufu.vdata.repository.CandidateListRepository;
+import com.ufu.vdata.service.parser.InputFileProcessor;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,8 +17,13 @@ import java.util.UUID;
 @RequestMapping("/api/candidates")
 class CandidateController {
 
+    private final CandidateListRepository candidateListRepository;
+    private final InputFileProcessor inputFileProcessor;
+
     @Autowired
-    CandidateListRepository candidateListRepository;
+    public CandidateController(CandidateListRepository candidateListRepository, InputFileProcessor inputFileProcessor) {
+        this.candidateListRepository = candidateListRepository;
+        this.inputFileProcessor = inputFileProcessor; }
 
     @RequestMapping(method = RequestMethod.GET)
     List<Candidate> getCandidates(@RequestParam(value = "election_id", required = false) String electionId) {
@@ -39,12 +44,17 @@ class CandidateController {
         return candidateListRepository.findById(candidateId).orElseThrow(() -> new ObjectNotFoundException(candidateId, "candidate"));
     }
 
+    //TODO edit candidates
+
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @RequestMapping(method = RequestMethod.DELETE, value = "/{candidateId}")
     void deleteCandidate(@PathVariable UUID candidateId) {
         candidateListRepository.deleteById(candidateId);
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/upload-file")
+    Candidate uploadFile(@RequestParam("file") MultipartFile file) {
 
-
+            return inputFileProcessor.createCandidateFromFile(file);
+    }
 }

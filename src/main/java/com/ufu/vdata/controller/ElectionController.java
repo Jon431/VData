@@ -14,8 +14,12 @@ import java.util.UUID;
 @RequestMapping(value= "/api/elections")
 class ElectionController {
 
-    @Autowired
     ElectionListRepository electionListRepository;
+
+    @Autowired
+    public ElectionController(ElectionListRepository electionListRepository) {
+        this.electionListRepository = electionListRepository;
+    }
 
 
     @RequestMapping(method = RequestMethod.GET)
