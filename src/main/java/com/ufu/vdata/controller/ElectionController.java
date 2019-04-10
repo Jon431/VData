@@ -4,6 +4,7 @@ import com.ufu.vdata.entity.Election;
 import com.ufu.vdata.repository.ElectionListRepository;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,6 +43,7 @@ class ElectionController {
                         return electionListRepository.save(newElection);});
     }
 
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @RequestMapping(method = RequestMethod.DELETE, value="/{electionId}")
     void deleteElection(@PathVariable UUID electionId) {
         electionListRepository.deleteById(electionId);

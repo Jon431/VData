@@ -3,11 +3,8 @@ package com.ufu.vdata.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -41,34 +38,34 @@ public class Candidate {
     @Column(name = "inn", updatable = true, nullable = false, length = 12)
     private String inn;
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate", orphanRemoval = true)
     private List<Income> incomeList;
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate", orphanRemoval = true)
     private List<Request> requestList;
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate", orphanRemoval = true)
     private List<Sequrities> sequritiesList;
     @JoinColumn(name = "election_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Election election;
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate", orphanRemoval = true)
     private List<Commercial> commercialList;
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate", orphanRemoval = true)
     private List<Money> moneyList;
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate", orphanRemoval = true)
     private List<Estate> estateList;
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate", orphanRemoval = true)
     private List<DocumentIn> documentInList;
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate", orphanRemoval = true)
     private List<Transport> transportList;
     @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate", orphanRemoval = true)
     private List<Stock> stockList;
 
     public UUID getId() {
@@ -235,4 +232,5 @@ public class Candidate {
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }
