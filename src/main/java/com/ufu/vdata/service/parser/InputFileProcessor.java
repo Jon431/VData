@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @Service
 public class InputFileProcessor {
 
@@ -31,8 +33,8 @@ private XWPFDocument document;
             if (isClassicFormDocx) { candidate =  classicFormDocx.processClassicDocx(document); }
             else throw new UnsupportedOperationException();
         }
-        catch (Exception ex) {
-            System.out.println("this is bad");
+        catch (IOException ex) {
+            System.out.println("IOException");
         }
 
 
