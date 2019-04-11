@@ -1,7 +1,9 @@
 package com.ufu.vdata.service.parser;
 
 import com.ufu.vdata.entity.Candidate;
+import com.ufu.vdata.entity.Estate;
 import com.ufu.vdata.entity.Income;
+import com.ufu.vdata.entity.Transport;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
@@ -38,14 +40,24 @@ class ClassicFormDocx {
     cnd.setDocumentNumber(docInn[0]);
     cnd.setInn(docInn[1]);
 
-    Income income = parseIncome(rows.get(7));
-    System.out.println(income.getIncomeSource());
-    System.out.println(income.getAmount());
-
     List<Income> cndInc = new ArrayList<>();
     cnd.setIncomeList(cndInc);
     for(int i = 7; i < rows.size(); i++) {
         cndInc.add(parseIncome(rows.get(i)));
+    }
+
+    List<Estate> cndEst = new ArrayList<>();
+    cnd.setEstateList(cndEst);
+    for(int i = 7; i < rows.size(); i++) {
+        for(int j = 3; j <= 8; j++) {
+            cndEst.add(parseEstate(rows.get(i), j));
+        }
+    }
+
+    List<Transport> cndTra = new ArrayList<>();
+    cnd.setTransportList(cndTra);
+    for(int i = 7; i < rows.size(); i++) {
+        cndTra.add(parseTransport(rows.get(i)));
     }
 
 
@@ -107,5 +119,56 @@ class ClassicFormDocx {
             income.setAmount(new BigDecimal(matcher.group(3).replace(",", ".")));
         }
         return income;
+    }
+
+    private Estate parseEstate(XWPFTableRow row, int pos) {
+        Estate estate = new Estate();
+        Pattern pattern = Pattern.compile("^(.*[А-Яа-я0-9])(, |,| )(\\d+\\.\\d+|\\d+,\\d+|\\d+).*$");
+        Matcher matcher = pattern.matcher(row.getCell(pos).getText());
+        if (matcher.find()) {
+            estate.setAddress(matcher.group(1));
+            estate.setEstateSpace((new BigDecimal(matcher.group(3).replace(",", "."))));
+            switch(pos) {
+                case 3: {
+                    estate.setEstateType("Земельный участок");
+                    break;
+                }
+                case 4: {
+                    estate.setEstateType("Жилой дом");
+                    break;
+                }
+                case 5: {
+                    estate.setEstateType("Квартира");
+                    break;
+                }
+                case 6: {
+                    estate.setEstateType("Дача");
+                    break;
+                }
+                case 7: {
+                    estate.setEstateType("Гараж");
+                    break;
+                }
+                case 8: {
+                    estate.setEstateType("Иное недвижимое имущество");
+                    break;
+                }
+            }
+
+        }
+        return estate;
+    }
+
+    private Transport parseTransport(XWPFTableRow row) {
+        Transport transport = new Transport();
+        Pattern pattern = Pattern.compile("^([A-Za-zА-Яа-я- ]+)(, |,| )([A-Za-zА-Яа-я0-9-]+)(, |,| )([A-Za-zА-Яа-я0-9-]+)(, |,| )(\\d\\d\\d\\d)$");
+        Matcher matcher = pattern.matcher(row.getCell(9).getText());
+        if (matcher.find()) {
+            transport.setTransportType(matcher.group(1));
+            transport.setBrand((matcher.group(3)));
+            transport.setModel(matcher.group(5));
+            transport.setTrasportYear(Short.parseShort(matcher.group(7)));
+        }
+        return transport;
     }
 }
