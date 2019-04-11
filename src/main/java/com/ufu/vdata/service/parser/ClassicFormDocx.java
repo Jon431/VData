@@ -9,22 +9,33 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 class ClassicFormDocx {
     Candidate cnd;
-Candidate processClassicDocx(XWPFDocument docx) {
+
+    Candidate processClassicDocx(XWPFDocument docx) {
 
     cnd = new Candidate();
 
-    List<XWPFTableRow> rows = new ArrayList<>();
-    XWPFTable table = docx.getTables().get(0);
-
-    XWPFTableRow row0 = table.getRow(0);
+    List<XWPFTableRow> rows =  docx.getTables().get(0).getRows();
 
 
+    cnd.setEstateDate(parseEstateDate(rows.get(0)).getTime());
 
-    cnd.setEstateDate(parseEstateDate(row0).getTime());
+    cnd.setIncomeYear(parseIncomeYear(rows.get(2)));
+
+    String[] name = parseName(rows.get(7));
+    cnd.setLastName(name[0]);
+    cnd.setFirstName(name[1]);
+    cnd.setPatronymic(name[2]);
+
+    String[] docInn = parseDocumentAndINN(rows.get(7));
+    cnd.setDocumentNumber(docInn[0]);
+    cnd.setInn(docInn[1]);
+
 
 
     //String t = row0.getCell(6).getText() + " " + row0.getCell(8).getText() + "20" + row0.getCell(10).getText();
@@ -37,11 +48,10 @@ Candidate processClassicDocx(XWPFDocument docx) {
     //}
 
 
-
-
-
     return cnd;
     }
+
+
     private Calendar parseEstateDate(XWPFTableRow row) {
         int day = Integer.parseInt(row.getCell(4).getText().replaceAll("[^0-9]", ""));
         String monthString = row.getCell(6).getText();
@@ -68,5 +78,22 @@ Candidate processClassicDocx(XWPFDocument docx) {
         Calendar cal = Calendar.getInstance();
         cal.set(year,month,day);
         return cal;
+    }
+    private short parseIncomeYear(XWPFTableRow row) {
+        return Short.parseShort(row.getCell(3).getText().replaceAll("[^0-9]",""));
+    }
+
+    private String[] parseName(XWPFTableRow row) {
+        return row.getCell(0).getText().split("\\s|,\\s|,", 3);
+    }
+
+    private String[] parseDocumentAndINN(XWPFTableRow row) {
+        Pattern pattern = Pattern.compile("^(.*\\d).*(\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d).*$");
+        Matcher matcher = pattern.matcher(row.getCell(1).getText());
+        String[] data = new String[2];
+        if (matcher.find()) {
+        data[0] = matcher.group(1);
+        data[1] = matcher.group(2); }
+        return data;
     }
 }

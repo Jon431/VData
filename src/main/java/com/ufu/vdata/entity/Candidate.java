@@ -31,7 +31,7 @@ public class Candidate {
     @Column(name = "estate_date", updatable = true, nullable = false)
     @JsonFormat(pattern = "dd-MM-yyyy")
     private Date estateDate;
-    @Column(name = "document_type", updatable = true, nullable = false, length = 50)
+    @Column(name = "document_type", updatable = true, nullable = true, length = 50)
     private String documentType;
     @Column(name = "document_number", updatable = true, nullable = false)
     private String documentNumber;
