@@ -1,11 +1,13 @@
 package com.ufu.vdata.service.parser;
 
 import com.ufu.vdata.entity.Candidate;
+import com.ufu.vdata.entity.Income;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -36,16 +38,15 @@ class ClassicFormDocx {
     cnd.setDocumentNumber(docInn[0]);
     cnd.setInn(docInn[1]);
 
+    Income income = parseIncome(rows.get(7));
+    System.out.println(income.getIncomeSource());
+    System.out.println(income.getAmount());
 
-
-    //String t = row0.getCell(6).getText() + " " + row0.getCell(8).getText() + "20" + row0.getCell(10).getText();
-
-
-
-
-    //for(int i = 7; i < table.getNumberOfRows(); i++) {
-    //    rows.add(table.getRow(i));
-    //}
+    List<Income> cndInc = new ArrayList<>();
+    cnd.setIncomeList(cndInc);
+    for(int i = 7; i < rows.size(); i++) {
+        cndInc.add(parseIncome(rows.get(i)));
+    }
 
 
     return cnd;
@@ -95,5 +96,16 @@ class ClassicFormDocx {
         data[0] = matcher.group(1);
         data[1] = matcher.group(2); }
         return data;
+    }
+
+    private Income parseIncome(XWPFTableRow row) {
+        Income income = new Income();
+        Pattern pattern = Pattern.compile("^(.*[А-Яа-я0-9])(, |,| )(\\d\\d\\d\\d+\\.\\d\\d|\\d\\d\\d\\d+,\\d\\d|\\d\\d\\d\\d+).*$");
+        Matcher matcher = pattern.matcher(row.getCell(2).getText());
+        if (matcher.find()) {
+            income.setIncomeSource(matcher.group(1));
+            income.setAmount(new BigDecimal(matcher.group(3).replace(",", ".")));
+        }
+        return income;
     }
 }
