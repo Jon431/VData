@@ -1,9 +1,6 @@
 package com.ufu.vdata.service.parser;
 
-import com.ufu.vdata.entity.Candidate;
-import com.ufu.vdata.entity.Estate;
-import com.ufu.vdata.entity.Income;
-import com.ufu.vdata.entity.Transport;
+import com.ufu.vdata.entity.*;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
@@ -60,6 +57,24 @@ class ClassicFormDocx {
         cndTra.add(parseTransport(rows.get(i)));
     }
 
+    List<Money> cndMon = new ArrayList<>();
+    cnd.setMoneyList(cndMon);
+    for(int i = 7; i < rows.size(); i++) {
+        cndMon.add(parseMoney(rows.get(i)));
+    }
+    List<Stock> cndStk = new ArrayList<>();
+    cnd.setStockList(cndStk);
+    for(int i = 7; i < rows.size(); i++) {
+        cndStk.add(parseStock(rows.get(i)));
+    }
+
+    List<Sequrities> cndSeq = new ArrayList<>();
+    cnd.setSequritiesList(cndSeq);
+    for(int i = 7; i < rows.size(); i++) {
+        cndSeq.add(parseSequrities(rows.get(i)));
+    }
+
+
 
     return cnd;
     }
@@ -112,7 +127,7 @@ class ClassicFormDocx {
 
     private Income parseIncome(XWPFTableRow row) {
         Income income = new Income();
-        Pattern pattern = Pattern.compile("^(.*[А-Яа-я0-9])(, |,| )(\\d\\d\\d\\d+\\.\\d\\d|\\d\\d\\d\\d+,\\d\\d|\\d\\d\\d\\d+).*$");
+        Pattern pattern = Pattern.compile("^(.*[А-Яа-я0-9Ёё])(, |,| )(\\d\\d\\d\\d+\\.\\d\\d|\\d\\d\\d\\d+,\\d\\d|\\d\\d\\d\\d+).*$");
         Matcher matcher = pattern.matcher(row.getCell(2).getText());
         if (matcher.find()) {
             income.setIncomeSource(matcher.group(1));
@@ -123,7 +138,7 @@ class ClassicFormDocx {
 
     private Estate parseEstate(XWPFTableRow row, int pos) {
         Estate estate = new Estate();
-        Pattern pattern = Pattern.compile("^(.*[А-Яа-я0-9])(, |,| )(\\d+\\.\\d+|\\d+,\\d+|\\d+).*$");
+        Pattern pattern = Pattern.compile("^(.*[А-Яа-я0-9Ёё])(, |,| )(\\d+\\.\\d+|\\d+,\\d+|\\d+).*$");
         Matcher matcher = pattern.matcher(row.getCell(pos).getText());
         if (matcher.find()) {
             estate.setAddress(matcher.group(1));
@@ -161,7 +176,7 @@ class ClassicFormDocx {
 
     private Transport parseTransport(XWPFTableRow row) {
         Transport transport = new Transport();
-        Pattern pattern = Pattern.compile("^([A-Za-zА-Яа-я- ]+)(, |,| )([A-Za-zА-Яа-я0-9-]+)(, |,| )([A-Za-zА-Яа-я0-9-]+)(, |,| )(\\d\\d\\d\\d)$");
+        Pattern pattern = Pattern.compile("^([A-Za-zА-Яа-я- Ёё]+)(, |,| )([A-Za-zА-Яа-яЁё0-9-]+)(, |,| )([A-Za-zА-Яа-яЁё0-9-]+)(, |,| )(\\d\\d\\d\\d)$");
         Matcher matcher = pattern.matcher(row.getCell(9).getText());
         if (matcher.find()) {
             transport.setTransportType(matcher.group(1));
@@ -170,5 +185,50 @@ class ClassicFormDocx {
             transport.setTrasportYear(Short.parseShort(matcher.group(7)));
         }
         return transport;
+    }
+
+    private Money parseMoney(XWPFTableRow row) {
+        Money money = new Money();
+        Pattern pattern = Pattern.compile("^([A-Za-zА-Яа-яЁё0-9-.\"«» ]{4,20})(, |,| )([A-Za-zА-Яа-яЁё0-9-,. ]{8,40}[A-Za-zА-Яа-яЁё0-9])(, |,| )([0-9- ]{6,40})(, |,| )([0-9 ]{2,12},[0-9]{1,2}|[0-9 ]{2,12}\\.[0-9]{1,2}|[0-9 ]{2,12})$");
+        Matcher matcher = pattern.matcher(clean(row.getCell(10).getText()));
+        if (matcher.find()) {
+            money.setBankName(matcher.group(1));
+            money.setBankAddress(matcher.group(3));
+            money.setBankAccountNumber(matcher.group(5));
+            money.setBankBalance(new BigDecimal(matcher.group(7).replace(",", ".")));
+        }
+        return money;
+    }
+
+    private Stock parseStock(XWPFTableRow row) {
+        Stock stock = new Stock();
+        Pattern pattern = Pattern.compile("([A-Za-zА-Яа-я0-9-.\"«» Ёё]{4,20})(, |,| )([0-9- ]{12})(, |,| )([A-Za-zА-Яа-я0-9-,. Ёё]{8,40}[A-Za-zА-Яа-яЁё0-9])(, |,| )([0-9 ]{2,12},[0-9]{1,2}|[0-9 ]{2,12}\\.[0-9]{1,2}|[0-9 ]{2,12})(, |,| )([0-9 ]{2,12},[0-9]{1,2}|[0-9 ]{2,12}\\.[0-9]{1,2}|[0-9 ]{2,12}[0-9])");
+        Matcher matcher = pattern.matcher(clean(row.getCell(11).getText()));
+        if (matcher.find()) {
+            stock.setCompanyName(matcher.group(1));
+            stock.setInn(matcher.group(3));
+            stock.setAddress(matcher.group(5));
+            stock.setAmount(new BigDecimal(matcher.group(7).replace(",", ".")));
+            stock.setPrice(new BigDecimal(matcher.group(9).replace(",", ".")));
+        }
+        return stock;
+    }
+    private String clean(String dirty) {
+        return dirty.replaceAll("[^A-Za-zА-Я а-я0-9.,\"«»Ёё]", "").replaceAll("  ", " ").replaceAll(" ,", ",");
+    }
+
+    private Sequrities parseSequrities(XWPFTableRow row) {
+        Sequrities sequrities = new Sequrities();
+        Pattern pattern = Pattern.compile("([A-Za-zА-Яа-я- Ёё]{4,20})(, |,| )([A-Za-zА-Яа-я- Ёё]{4,20})(, |,| )([0-9- ]{12})(, |,| )([A-Za-zА-Яа-я0-9-,. Ёё]{8,40}[A-Za-zА-Яа-я0-9Ёё])(, |,| )([0-9]{1,10},[0-9]{1,10}|[0-9]{1,10}\\.[0-9]{1,10}|[0-9]{1,10})(, |,| )([0-9 ]{1,12},[0-9]{2}|[0-9 ]{1,12}\\.[0-9]{2}|[0-9]{2,12}[0-9])$"); //TODO make it work properly
+        Matcher matcher = pattern.matcher(clean(row.getCell(12).getText()));
+        if (matcher.find()) {
+            sequrities.setSequritiesType(matcher.group(1));
+            sequrities.setDebtor(matcher.group(3));
+            sequrities.setInn(matcher.group(5));
+            sequrities.setAddress(matcher.group(7));
+            sequrities.setAmount(new BigDecimal(matcher.group(9).replace(",", ".")));
+            sequrities.setSequritiesSum(new BigDecimal(matcher.group(11).replace(",", ".")));
+        }
+        return sequrities;
     }
 }
