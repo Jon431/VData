@@ -74,6 +74,12 @@ class ClassicFormDocx {
         cndSeq.add(parseSequrities(rows.get(i)));
     }
 
+    List<Commercial> cndCom = new ArrayList<>();
+    cnd.setCommercialList(cndCom);
+    for(int i = 7; i < rows.size(); i++) {
+        cndCom.add(parseCommercial(rows.get(i)));
+    }
+
 
 
     return cnd;
@@ -219,7 +225,7 @@ class ClassicFormDocx {
 
     private Sequrities parseSequrities(XWPFTableRow row) {
         Sequrities sequrities = new Sequrities();
-        Pattern pattern = Pattern.compile("([A-Za-zА-Яа-я- Ёё]{4,20})(, |,| )([A-Za-zА-Яа-я- Ёё]{4,20})(, |,| )([0-9- ]{12})(, |,| )([A-Za-zА-Яа-я0-9-,. Ёё]{8,40}[A-Za-zА-Яа-я0-9Ёё])(, |,| )([0-9]{1,10},[0-9]{1,10}|[0-9]{1,10}\\.[0-9]{1,10}|[0-9]{1,10})(, |,| )([0-9 ]{1,12},[0-9]{2}|[0-9 ]{1,12}\\.[0-9]{2}|[0-9]{2,12}[0-9])$"); //TODO make it work properly
+        Pattern pattern = Pattern.compile("([A-Za-zА-Яа-я- Ёё]{4,20})(, |,| )([A-Za-zА-Яа-я- Ёё]{4,20})(, |,| )([0-9- ]{12})(, |,| )([A-Za-zА-Яа-я0-9-,. Ёё]{8,40}[A-Za-zА-Яа-я0-9Ёё])(, | )([0-9]{1,10},[0-9]{1,10}|[0-9]{1,10}\\.[0-9]{1,10}|[0-9]{1,10})(, | )([0-9 ]{1,12},[0-9]{2}|[0-9 ]{1,12}\\.[0-9]{2}|[0-9 ]{2,12}[0-9])([^0-9]*$)");
         Matcher matcher = pattern.matcher(clean(row.getCell(12).getText()));
         if (matcher.find()) {
             sequrities.setSequritiesType(matcher.group(1));
@@ -230,5 +236,18 @@ class ClassicFormDocx {
             sequrities.setSequritiesSum(new BigDecimal(matcher.group(11).replace(",", ".")));
         }
         return sequrities;
+    }
+
+    private Commercial parseCommercial(XWPFTableRow row) {
+        Commercial commercial = new Commercial();
+        Pattern pattern = Pattern.compile("([A-Za-zА-Яа-я0-9-,. Ёё\"«»]{4,20}[A-Za-zА-Яа-я0-9Ёё\"»])(, |,| )([0-9- ]{12})(, |,| )([A-Za-zА-Яа-я0-9-,. Ёё\"«»]{6,50}[A-Za-zА-Яа-яЁё0-9])(, |,| )([0-9]{1,2}.[0-9]{1,10}|[0-9]{1,2},[0-9]{1,10}|[0-9]{1,2})([^0-9]*$)");
+        Matcher matcher = pattern.matcher(clean(row.getCell(13).getText()));
+        if (matcher.find()) {
+            commercial.setCommercialName(matcher.group(1));
+            commercial.setInn(matcher.group(3));
+            commercial.setAddress(matcher.group(5));
+            commercial.setCommercialShare(new BigDecimal((matcher.group(7).replace(",","."))));
+        }
+        return commercial;
     }
 }
