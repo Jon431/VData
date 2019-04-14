@@ -1,6 +1,7 @@
 package com.ufu.vdata.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -56,5 +57,10 @@ public class Income {
 
     public void setCandidate(Candidate candidate) {
         this.candidate = candidate;
+    }
+
+    @JsonIgnore
+    public boolean isValid() {
+        return getIncomeSource()!=null && getAmount()!=null;
     }
 }

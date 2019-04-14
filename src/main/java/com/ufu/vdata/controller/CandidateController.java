@@ -26,7 +26,7 @@ class CandidateController {
         this.inputFileProcessor = inputFileProcessor; }
 
     @RequestMapping(method = RequestMethod.GET)
-    List<Candidate> getCandidates(@RequestParam(value = "election_id", required = false) String electionId) {
+    List<Candidate> getCandidates(@RequestParam(value = "election-id", required = false) String electionId) {
         if (electionId != null) {
             return candidateListRepository.findAllByElection(new Election(electionId)); }
 
@@ -53,8 +53,11 @@ class CandidateController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/upload-file")
-    Candidate uploadFile(@RequestParam("file") MultipartFile file) {
+    Candidate uploadFile(@RequestParam("file") MultipartFile file, @RequestParam(value = "election-id", required = false) String electionId) {
 
-            return inputFileProcessor.createCandidateFromFile(file);
+            Candidate cnd = inputFileProcessor.createCandidateFromFile(file);
+            if (electionId != null) {
+            cnd.setElection(new Election(electionId)); }
+            return cnd;
     }
 }

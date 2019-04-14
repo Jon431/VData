@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,44 +41,52 @@ class ClassicFormDocx {
     List<Income> cndInc = new ArrayList<>();
     cnd.setIncomeList(cndInc);
     for(int i = 7; i < rows.size(); i++) {
-        cndInc.add(parseIncome(rows.get(i)));
+        Income inc = (parseIncome(rows.get(i)));
+        if (inc.isValid()) cndInc.add(inc);
     }
 
     List<Estate> cndEst = new ArrayList<>();
     cnd.setEstateList(cndEst);
     for(int i = 7; i < rows.size(); i++) {
         for(int j = 3; j <= 8; j++) {
-            cndEst.add(parseEstate(rows.get(i), j));
+            Estate est = parseEstate(rows.get(i), j);
+            if (est.isValid()) cndEst.add(est);
         }
     }
 
     List<Transport> cndTra = new ArrayList<>();
     cnd.setTransportList(cndTra);
     for(int i = 7; i < rows.size(); i++) {
-        cndTra.add(parseTransport(rows.get(i)));
+        Transport tra = parseTransport(rows.get(i));
+        if (tra.isValid()) cndTra.add(tra);
     }
 
     List<Money> cndMon = new ArrayList<>();
     cnd.setMoneyList(cndMon);
     for(int i = 7; i < rows.size(); i++) {
-        cndMon.add(parseMoney(rows.get(i)));
+        Money mon = parseMoney(rows.get(i));
+        if (mon.isValid()) cndMon.add(mon);
     }
+
     List<Stock> cndStk = new ArrayList<>();
     cnd.setStockList(cndStk);
     for(int i = 7; i < rows.size(); i++) {
-        cndStk.add(parseStock(rows.get(i)));
+        Stock stk = parseStock(rows.get(i));
+        if (stk.isValid()) cndStk.add(stk);
     }
 
     List<Sequrities> cndSeq = new ArrayList<>();
     cnd.setSequritiesList(cndSeq);
     for(int i = 7; i < rows.size(); i++) {
-        cndSeq.add(parseSequrities(rows.get(i)));
+        Sequrities seq = parseSequrities(rows.get(i));
+        if (seq.isValid()) cndSeq.add(seq);
     }
 
     List<Commercial> cndCom = new ArrayList<>();
     cnd.setCommercialList(cndCom);
     for(int i = 7; i < rows.size(); i++) {
-        cndCom.add(parseCommercial(rows.get(i)));
+        Commercial com = parseCommercial(rows.get(i));
+        if (com.isValid()) cndCom.add(com);
     }
 
 

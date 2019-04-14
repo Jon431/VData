@@ -1,6 +1,7 @@
 package com.ufu.vdata.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "candidate")
 @Entity
 public class Candidate {

@@ -1,6 +1,7 @@
 package com.ufu.vdata.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -33,6 +34,11 @@ public class Sequrities {
     @JoinColumn(name = "candidate_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Candidate candidate;
+
+    @JsonIgnore
+    public boolean isValid() {
+        return getSequritiesType()!=null && getDebtor()!=null && getInn()!=null && getAddress()!=null && getAmount()!=null && getSequritiesSum()!=null;
+    }
 
     public UUID getId() {
         return id;

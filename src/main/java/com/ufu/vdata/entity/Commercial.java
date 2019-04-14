@@ -1,6 +1,7 @@
 package com.ufu.vdata.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -29,6 +30,11 @@ public class Commercial {
     @JoinColumn(name = "candidate_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Candidate candidate;
+
+    @JsonIgnore
+    public boolean isValid() {
+        return getCommercialName()!=null && getInn()!=null && getAddress()!=null && getCommercialShare()!=null;
+    }
 
     public UUID getId() {
         return id;
