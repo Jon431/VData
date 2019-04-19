@@ -1,8 +1,0 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost/vdata
-    username: vdatabase
-    password: B4Hvgw59yZiPFsMceYuGjM
-  jpa:
-    hibernate:
-      ddl-auto: update
