@@ -39,6 +39,8 @@ public class Candidate {
     private String documentNumber;
     @Column(name = "inn", updatable = true, nullable = false, length = 12)
     private String inn;
+    @Column(name = "date_created", updatable = false, nullable = false)
+    private Date dateCreated;
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate", orphanRemoval = true)
     private List<Income> incomeList;
@@ -69,6 +71,9 @@ public class Candidate {
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate", orphanRemoval = true)
     private List<Stock> stockList;
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate", orphanRemoval = true)
+    private List<DocMonCom> docMonComList;
 
     public UUID getId() {
         return id;
@@ -220,6 +225,22 @@ public class Candidate {
 
     public void setStockList(List<Stock> stockList) {
         this.stockList = stockList;
+    }
+
+    public List<DocMonCom> getDocMonComList() {
+        return docMonComList;
+    }
+
+    public void setDocMonComList(List<DocMonCom> docMonComList) {
+        this.docMonComList = docMonComList;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     @Override

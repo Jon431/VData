@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,6 +37,7 @@ class CandidateController {
 
     @RequestMapping(method = RequestMethod.POST)
     Candidate createCandidate(@RequestBody Candidate newCandidate) {
+        newCandidate.setDateCreated(new Date());
         return candidateListRepository.save(newCandidate);
     }
 
