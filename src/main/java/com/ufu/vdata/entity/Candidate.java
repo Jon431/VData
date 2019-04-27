@@ -1,7 +1,6 @@
 package com.ufu.vdata.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -11,7 +10,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-//@JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "candidate")
 @Entity
 public class Candidate {
@@ -62,9 +60,6 @@ public class Candidate {
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate", orphanRemoval = true)
     private List<Estate> estateList;
-    @JsonManagedReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate", orphanRemoval = true)
-    private List<DocumentIn> documentInList;
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate", orphanRemoval = true)
     private List<Transport> transportList;
@@ -201,14 +196,6 @@ public class Candidate {
 
     public void setEstateList(List<Estate> estateList) {
         this.estateList = estateList;
-    }
-
-    public List<DocumentIn> getDocumentInList() {
-        return documentInList;
-    }
-
-    public void setDocumentInList(List<DocumentIn> documentInList) {
-        this.documentInList = documentInList;
     }
 
     public List<Transport> getTransportList() {
