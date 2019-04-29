@@ -1,15 +1,13 @@
 package com.ufu.vdata.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @MappedSuperclass
-public class Document {
+public abstract class Document {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -19,21 +17,19 @@ public class Document {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @JsonBackReference
-    @JoinColumn(name = "candidate", referencedColumnName = "id")
-    @ManyToOne
-    private Candidate candidate;
+    @Column(name = "type")
+    private byte type;
 
     @Column(name = "date_created")
     private Date dateCreated;
 
-    @Column(name = "date_sent", updatable = false, nullable = false)
+    @Column(name = "date_sent", updatable = false)
     private Date dateSent;
 
-    @Column(name = "date_answered", updatable = false, nullable = false)
+    @Column(name = "date_answered", updatable = false)
     private Date dateAnswered;
 
-    @Column(name = "status", updatable = true)
+    @Column(name = "status")
     private byte status;
         /*
             0 - invalid
@@ -64,13 +60,12 @@ public class Document {
         this.id = id;
     }
 
-
-    public Candidate getCandidate() {
-        return candidate;
+    public byte getType() {
+        return type;
     }
 
-    public void setCandidate(Candidate candidate) {
-        this.candidate = candidate;
+    public void setType(byte type) {
+        this.type = type;
     }
 
     public Date getDateCreated() {

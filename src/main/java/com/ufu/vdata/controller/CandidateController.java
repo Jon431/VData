@@ -1,6 +1,7 @@
 package com.ufu.vdata.controller;
 
 import com.ufu.vdata.entity.Candidate;
+import com.ufu.vdata.entity.Document;
 import com.ufu.vdata.entity.Election;
 import com.ufu.vdata.repository.CandidateListRepository;
 import com.ufu.vdata.service.parser.InputFileProcessor;
