@@ -1,8 +1,6 @@
 package com.ufu.vdata.controller;
 
-import com.ufu.vdata.entity.DocMonCom;
 import com.ufu.vdata.entity.Document;
-import com.ufu.vdata.repository.DocMonComListRepository;
 import com.ufu.vdata.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +27,9 @@ public class DocumentController {
                                 @RequestParam(value = "date-from", required = false) Date dateFrom,
                                 @RequestParam(value = "date-to", required = false) Date dateTo) {
     documentService.populate();
+    if (type!=null)
     return documentService.getAllByType(type);
+    else return documentService.getAllByStatus(status);
     }
 
 }
