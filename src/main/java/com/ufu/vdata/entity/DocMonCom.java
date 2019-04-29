@@ -37,8 +37,7 @@ public class DocMonCom extends Document{
     }
 
     public DocMonCom() {
+        super();
         setType(Byte.parseByte("1"));
-        setDateCreated(new Date());
-        setStatus(Byte.parseByte("1"));
     }
 }

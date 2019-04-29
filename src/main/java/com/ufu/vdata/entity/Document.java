@@ -51,6 +51,11 @@ public abstract class Document {
     @Column(name = "candidate_patronymic", updatable = false, nullable = false)
     private String candidatePatronymic;
 
+    Document() {
+        setStatus(Byte.parseByte("1"));
+        setDateCreated(new Date());
+    }
+
 
     public UUID getId() {
         return id;

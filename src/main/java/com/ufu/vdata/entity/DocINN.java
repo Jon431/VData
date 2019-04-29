@@ -18,8 +18,7 @@ public class DocINN extends Document {
     }
 
     public DocINN() {
+        super();
         setType(Byte.parseByte("2"));
-        setDateCreated(new Date());
-        setStatus(Byte.parseByte("1"));
     }
 }

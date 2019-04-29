@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,15 +22,17 @@ public class DocumentService {
         this.docMonComListRepository = docMonComListRepository;
         this.docINNListRepository = docINNListRepository;
     }
+
+    public List<Document> getAll() {
+        List<Document> result = docMonComListRepository.getAll();
+        result.addAll(docINNListRepository.getAll());
+        return result;
+    }
+
     public List<Document> getAllByType(Byte type) {
         switch (type) {
             case 1: {return new ArrayList<>(docMonComListRepository.findAll());}
             case 2: {return new ArrayList<>(docINNListRepository.findAll());}
-            case 0: {
-                List<Document> result = docMonComListRepository.getAll();
-                result.addAll(docINNListRepository.getAll());
-                return result;
-            }
         }
         return new ArrayList<>();
     }
@@ -39,7 +42,12 @@ public class DocumentService {
         List<Document> result = docMonComListRepository.getAllByStatus(status);
         result.addAll(docINNListRepository.getAllByStatus(status));
         return result;
+    }
 
+    public List<Document> getAllByDateCreated(Date date1, Date date2){
+        List<Document> result = docMonComListRepository.getAllByDateCreatedBetween(date1,date2);
+        result.addAll(docINNListRepository.getAllByDateCreatedBetween(date1,date2));
+        return result;
     }
 
     public void populate() {
