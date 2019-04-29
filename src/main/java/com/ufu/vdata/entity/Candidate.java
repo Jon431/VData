@@ -243,4 +243,8 @@ public class Candidate {
         return Objects.hash(id);
     }
 
+    public Candidate() {
+        setDateCreated(new Date());
+    }
+
 }
