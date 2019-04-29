@@ -41,7 +41,10 @@ class CandidateController {
         return candidateService.getCandidate(candidateId);
     }
 
-    //TODO edit candidates
+    @RequestMapping(method = RequestMethod.PUT, value = "/{candidateId}")
+    Candidate editCandidate(@PathVariable UUID candidateId, @RequestBody Candidate newCandidate) {
+        return candidateService.editCandidate(candidateId, newCandidate);
+    }
 
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @RequestMapping(method = RequestMethod.DELETE, value = "/{candidateId}")

@@ -32,8 +32,33 @@ public class CandidateService {
         return candidateListRepository.findById(uuid).orElseThrow(() -> new ObjectNotFoundException(uuid, "candidate"));
     }
 
-    public Candidate createCandidate(Candidate candidate) {
+    public Candidate createCandidate(Candidate newCandidate) {
+        return candidateListRepository.save(newCandidate);
+    }
+
+    public Candidate editCandidate(UUID uuid, Candidate newCandidate) {
+        Candidate candidate = candidateListRepository.findById(uuid).orElseThrow(() -> new ObjectNotFoundException(uuid, "candidate"));
+        candidate.setLastName(newCandidate.getLastName());
+        candidate.setFirstName(newCandidate.getFirstName());
+        candidate.setPatronymic(newCandidate.getPatronymic());
+        candidate.setIncomeYear(newCandidate.getIncomeYear());
+        candidate.setEstateDate(newCandidate.getEstateDate());
+        candidate.setDocumentType(newCandidate.getDocumentType());
+        candidate.setDocumentNumber(newCandidate.getDocumentNumber());
+        candidate.setInn(newCandidate.getInn());
+/*
+        candidate.setIncomeList(newCandidate.getIncomeList());
+        candidate.setRequestList(newCandidate.getRequestList());
+        candidate.setSequritiesList(newCandidate.getSequritiesList());
+        candidate.setCommercialList(newCandidate.getCommercialList());
+        candidate.setMoneyList(newCandidate.getMoneyList());
+        candidate.setEstateList(newCandidate.getEstateList());
+        candidate.setTransportList(newCandidate.getTransportList());
+        candidate.setStockList(newCandidate.getStockList());
+*/
+//TODO change it
         return candidateListRepository.save(candidate);
+
     }
 
     public void deleteCandidate(UUID uuid) {
