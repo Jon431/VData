@@ -3,8 +3,10 @@ package com.ufu.vdata.entity.document;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ufu.vdata.entity.Candidate;
+import com.ufu.vdata.entity.Income;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,8 +18,6 @@ public class DocIncCom extends Document{
     @JoinColumn(name = "candidate", referencedColumnName = "id")
     @ManyToOne
     private Candidate candidate;
-    @Column
-    private Date birthday;
     @Column(name = "document_type")
     private String documentType;
     @Column(name = "document_number")
@@ -52,15 +52,20 @@ public class DocIncCom extends Document{
         setCandidateLastName(cnd.getLastName());
         setCandidatePatronymic(cnd.getPatronymic());
         setElectionName(cnd.getElection().toString());
+        setDocumentType(cnd.getDocumentType());
+        setDocumentNumber(cnd.getDocumentNumber());
+        setInn(cnd.getInn()); /*
+        ArrayList<DocIncComIncome> docIncomes = new ArrayList<>();
+        for (Income cndIncome : cnd.getIncomeList()) {
+            DocIncComIncome docIncome = new DocIncComIncome();
+            docIncome.setIncomeSource(cndIncome.getIncomeSource());
+            docIncome.setAmount(cndIncome.getAmount());
+            incomes.add(docIncome);
+        }
+        setIncomes(docIncomes);
+*/ //TODO this does not work now
     }
 
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
 
     public String getDocumentType() {
         return documentType;
@@ -101,4 +106,6 @@ public class DocIncCom extends Document{
     public void setCommercials(List<DocIncComCommercial> commercials) {
         this.commercials = commercials;
     }
+
+
 }

@@ -5,6 +5,7 @@ import com.ufu.vdata.entity.document.DocINN;
 import com.ufu.vdata.entity.document.DocIncCom;
 import com.ufu.vdata.entity.document.DocIncComIncome;
 import com.ufu.vdata.entity.document.Document;
+import com.ufu.vdata.repository.CandidateListRepository;
 import com.ufu.vdata.repository.DocINNListRepository;
 import com.ufu.vdata.repository.DocIncComRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +14,19 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class DocumentService {
     private final DocIncComRepository docIncComRepository;
     private final DocINNListRepository docINNListRepository;
+    private final CandidateListRepository candidateListRepository;
 
     @Autowired
-    public DocumentService(DocIncComRepository docIncComRepository, DocINNListRepository docINNListRepository) {
+    public DocumentService(DocIncComRepository docIncComRepository, DocINNListRepository docINNListRepository, CandidateListRepository candidateListRepository) {
         this.docIncComRepository = docIncComRepository;
         this.docINNListRepository = docINNListRepository;
+        this.candidateListRepository = candidateListRepository;
     }
 
     public List<Document> getAll() {
@@ -52,8 +56,12 @@ public class DocumentService {
         return result;
     }
 
-    public Document createDocIncCom(Candidate cnd) {
-        return null;//TODO
+    public void createDocIncComs(List<String> cndIds) {
+        for (String id : cndIds) {
+            Candidate cnd = candidateListRepository.findById(UUID.fromString(id)).orElseThrow(() -> new IllegalArgumentException("Not found candidate " + id));
+            docIncComRepository.save(new DocIncCom(cnd));
+        }
+        docIncComRepository.flush();
     }
 
 

@@ -5,6 +5,6 @@ spring:
     password: B4Hvgw59yZiPFsMceYuGjM
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
 server:
   port: 8080

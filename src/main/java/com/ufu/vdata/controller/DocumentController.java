@@ -5,6 +5,7 @@ import com.ufu.vdata.entity.document.Document;
 import com.ufu.vdata.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -42,17 +43,14 @@ public class DocumentController {
     else return null;
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST)
-    void createDocuments(@RequestParam(value = "type") Byte type, @RequestBody HashMap<String,String> params) {
-        System.out.println(type);
-        System.out.println(params.get("candidate"));
-
-                 /*
-                1 или много кандидатов
-                1 или много запросов
-
-                */
+    void createDocuments(@RequestParam(value = "type") Byte type, @RequestBody ArrayList<String> candidateIds) {
+        switch(type) {
+            case 1: {
+                documentService.createDocIncComs(candidateIds);
+            }
+        }
     }
-
 
 }
