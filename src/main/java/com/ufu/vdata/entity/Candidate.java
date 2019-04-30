@@ -2,6 +2,7 @@ package com.ufu.vdata.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ufu.vdata.entity.document.DocIncCom;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -68,7 +69,7 @@ public class Candidate {
     private List<Stock> stockList;
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate", orphanRemoval = true)
-    private List<DocMonCom> docMonComList;
+    private List<DocIncCom> docIncComList;
 
     public UUID getId() {
         return id;
@@ -214,12 +215,12 @@ public class Candidate {
         this.stockList = stockList;
     }
 
-    public List<DocMonCom> getDocMonComList() {
-        return docMonComList;
+    public List<DocIncCom> getDocIncComList() {
+        return docIncComList;
     }
 
-    public void setDocMonComList(List<DocMonCom> docMonComList) {
-        this.docMonComList = docMonComList;
+    public void setDocIncComList(List<DocIncCom> docIncComList) {
+        this.docIncComList = docIncComList;
     }
 
     public Date getDateCreated() {
@@ -245,6 +246,9 @@ public class Candidate {
 
     public Candidate() {
         setDateCreated(new Date());
+    }
+    public Candidate(String id) {
+        this.id = UUID.fromString(id);
     }
 
 }

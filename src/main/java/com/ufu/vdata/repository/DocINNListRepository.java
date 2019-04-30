@@ -1,10 +1,9 @@
 package com.ufu.vdata.repository;
 
-import com.ufu.vdata.entity.DocINN;
-import com.ufu.vdata.entity.Document;
+import com.ufu.vdata.entity.document.DocINN;
+import com.ufu.vdata.entity.document.Document;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;

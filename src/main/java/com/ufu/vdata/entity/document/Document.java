@@ -1,4 +1,4 @@
-package com.ufu.vdata.entity;
+package com.ufu.vdata.entity.document;
 
 import org.hibernate.annotations.GenericGenerator;
 

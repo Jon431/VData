@@ -65,4 +65,9 @@ public class Election {
         this.id = UUID.fromString(id);
     }
     public Election() {}
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -1,15 +1,15 @@
 package com.ufu.vdata.controller;
 
-import com.ufu.vdata.entity.Document;
+import com.ufu.vdata.entity.Candidate;
+import com.ufu.vdata.entity.document.Document;
 import com.ufu.vdata.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -27,7 +27,7 @@ public class DocumentController {
                                 @RequestParam(value = "status", required = false) Byte status,
                                 @RequestParam(value = "date-from", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") Date dateFrom,
                                 @RequestParam(value = "date-to", required = false) @DateTimeFormat(pattern = "dd-MM-yyyy") Date dateTo) {
-    documentService.populate();
+
     if (type==null&&status==null&&dateFrom==null&&dateTo==null)
     return documentService.getAll();
 
@@ -40,6 +40,18 @@ public class DocumentController {
     else if (type==null&&status==null&&dateFrom!=null&&dateTo!=null)
         return documentService.getAllByDateCreated(dateFrom,dateTo);
     else return null;
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    void createDocuments(@RequestParam(value = "type") Byte type, @RequestBody HashMap<String,String> params) {
+        System.out.println(type);
+        System.out.println(params.get("candidate"));
+
+                 /*
+                1 или много кандидатов
+                1 или много запросов
+
+                */
     }
 
 

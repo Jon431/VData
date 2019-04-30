@@ -1,8 +1,7 @@
-package com.ufu.vdata.entity;
+package com.ufu.vdata.entity.document;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Date;
 
 @Table(name = "document_INN")
 @Entity
