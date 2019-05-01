@@ -1,6 +1,5 @@
 package com.ufu.vdata.controller;
 
-import com.ufu.vdata.entity.Candidate;
 import com.ufu.vdata.entity.document.Document;
 import com.ufu.vdata.service.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController

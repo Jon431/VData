@@ -1,6 +1,7 @@
 package com.ufu.vdata.service;
 
 import com.ufu.vdata.entity.Candidate;
+import com.ufu.vdata.entity.Income;
 import com.ufu.vdata.entity.document.DocINN;
 import com.ufu.vdata.entity.document.DocIncCom;
 import com.ufu.vdata.entity.document.DocIncComIncome;
@@ -59,7 +60,25 @@ public class DocumentService {
     public void createDocIncComs(List<String> cndIds) {
         for (String id : cndIds) {
             Candidate cnd = candidateListRepository.findById(UUID.fromString(id)).orElseThrow(() -> new IllegalArgumentException("Not found candidate " + id));
-            docIncComRepository.save(new DocIncCom(cnd));
+            DocIncCom dnc = new DocIncCom();
+            dnc.setCandidate(cnd);
+            dnc.setCandidateFirstName(cnd.getFirstName());
+            dnc.setCandidateLastName(cnd.getLastName());
+            dnc.setCandidatePatronymic(cnd.getPatronymic());
+            dnc.setElectionName(cnd.getElection().toString());
+            dnc.setDocumentType(cnd.getDocumentType());
+            dnc.setDocumentNumber(cnd.getDocumentNumber());
+            dnc.setInn(cnd.getInn());
+            ArrayList<DocIncComIncome> docIncomes = new ArrayList<>();
+            for (Income cndIncome : cnd.getIncomeList()) {
+                DocIncComIncome docIncome = new DocIncComIncome();
+                docIncome.setIncomeSource(cndIncome.getIncomeSource());
+                docIncome.setAmount(cndIncome.getAmount());
+                docIncome.setDocIncCom(dnc);
+                docIncomes.add(docIncome);
+            }
+            dnc.setIncomes(docIncomes);
+            docIncComRepository.save(dnc);
         }
         docIncComRepository.flush();
     }
