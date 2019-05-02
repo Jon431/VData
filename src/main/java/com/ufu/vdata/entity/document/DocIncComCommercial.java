@@ -42,4 +42,68 @@ public class DocIncComCommercial {
     @Column(name = "note")
     @Length(max = 100)
     private String note;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public DocIncCom getDocIncCom() {
+        return docIncCom;
+    }
+
+    public void setDocIncCom(DocIncCom docIncCom) {
+        this.docIncCom = docIncCom;
+    }
+
+    public String getCommercialName() {
+        return commercialName;
+    }
+
+    public void setCommercialName(String commercialName) {
+        this.commercialName = commercialName;
+    }
+
+    public String getInn() {
+        return inn;
+    }
+
+    public void setInn(String inn) {
+        this.inn = inn;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public BigDecimal getCommercialShare() {
+        return commercialShare;
+    }
+
+    public void setCommercialShare(BigDecimal commercialShare) {
+        this.commercialShare = commercialShare;
+    }
+
+    public boolean isMatches() {
+        return isMatches;
+    }
+
+    public void setMatches(boolean matches) {
+        isMatches = matches;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
 }

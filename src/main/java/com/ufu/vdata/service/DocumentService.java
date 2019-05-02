@@ -1,11 +1,9 @@
 package com.ufu.vdata.service;
 
 import com.ufu.vdata.entity.Candidate;
+import com.ufu.vdata.entity.Commercial;
 import com.ufu.vdata.entity.Income;
-import com.ufu.vdata.entity.document.DocINN;
-import com.ufu.vdata.entity.document.DocIncCom;
-import com.ufu.vdata.entity.document.DocIncComIncome;
-import com.ufu.vdata.entity.document.Document;
+import com.ufu.vdata.entity.document.*;
 import com.ufu.vdata.repository.CandidateListRepository;
 import com.ufu.vdata.repository.DocINNListRepository;
 import com.ufu.vdata.repository.DocIncComRepository;
@@ -78,6 +76,17 @@ public class DocumentService {
                 docIncomes.add(docIncome);
             }
             dnc.setIncomes(docIncomes);
+            ArrayList<DocIncComCommercial> docComs = new ArrayList<>();
+            for (Commercial cndCom : cnd.getCommercialList()) {
+                DocIncComCommercial docCom = new DocIncComCommercial();
+                docCom.setDocIncCom(dnc);
+                docCom.setCommercialName(cndCom.getCommercialName());
+                docCom.setInn(cndCom.getInn());
+                docCom.setAddress(cndCom.getAddress());
+                docCom.setCommercialShare(cndCom.getCommercialShare());
+                docComs.add(docCom);
+            }
+            dnc.setCommercials(docComs);
             docIncComRepository.save(dnc);
         }
         docIncComRepository.flush();
