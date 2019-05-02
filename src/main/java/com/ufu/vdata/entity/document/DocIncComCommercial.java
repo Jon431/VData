@@ -39,9 +39,9 @@ public class DocIncComCommercial {
     @Column(name = "is_matches")
     private boolean isMatches;
 
-    @Column(name = "note")
+    @Column(name = "data")
     @Length(max = 100)
-    private String note;
+    private String data;
 
     public UUID getId() {
         return id;
@@ -99,11 +99,11 @@ public class DocIncComCommercial {
         isMatches = matches;
     }
 
-    public String getNote() {
-        return note;
+    public String getData() {
+        return data;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setData(String data) {
+        this.data = data;
     }
 }

@@ -2,6 +2,7 @@ package com.ufu.vdata.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ufu.vdata.entity.document.DocINN;
 import com.ufu.vdata.entity.document.DocIncCom;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -70,6 +71,9 @@ public class Candidate {
     @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate", orphanRemoval = true)
     private List<DocIncCom> docIncComList;
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "candidate", orphanRemoval = true)
+    private List<DocINN> docINNList;
 
     public UUID getId() {
         return id;
@@ -229,6 +233,14 @@ public class Candidate {
 
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    public List<DocINN> getDocINNList() {
+        return docINNList;
+    }
+
+    public void setDocINNList(List<DocINN> docINNList) {
+        this.docINNList = docINNList;
     }
 
     @Override

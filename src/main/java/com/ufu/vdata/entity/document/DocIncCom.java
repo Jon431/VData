@@ -3,8 +3,11 @@ package com.ufu.vdata.entity.document;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ufu.vdata.entity.Candidate;
+import com.ufu.vdata.entity.Commercial;
+import com.ufu.vdata.entity.Income;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "document_income_commercial")
@@ -36,12 +39,6 @@ public class DocIncCom extends Document{
     public void setCandidate(Candidate candidate) {
         this.candidate = candidate;
     }
-
-    public DocIncCom() {
-        super();
-        setType(Byte.parseByte("1"));
-    }
-
 
     public String getDocumentType() {
         return documentType;
@@ -83,5 +80,42 @@ public class DocIncCom extends Document{
         this.commercials = commercials;
     }
 
+    public DocIncCom() {
+        super();
+        setType(Byte.parseByte("1"));
+    }
+
+    public DocIncCom(Candidate cnd) {
+        super();
+        setType(Byte.parseByte("1"));
+        setCandidate(cnd);
+        setCandidateFirstName(cnd.getFirstName());
+        setCandidateLastName(cnd.getLastName());
+        setCandidatePatronymic(cnd.getPatronymic());
+        setElectionName(cnd.getElection().toString());
+        setDocumentType(cnd.getDocumentType());
+        setDocumentNumber(cnd.getDocumentNumber());
+        setInn(cnd.getInn());
+        ArrayList<DocIncComIncome> docIncomes = new ArrayList<>();
+        for (Income cndIncome : cnd.getIncomeList()) {
+            DocIncComIncome docIncome = new DocIncComIncome();
+            docIncome.setIncomeSource(cndIncome.getIncomeSource());
+            docIncome.setAmount(cndIncome.getAmount());
+            docIncome.setDocIncCom(this);
+            docIncomes.add(docIncome);
+        }
+        setIncomes(docIncomes);
+        ArrayList<DocIncComCommercial> docComs = new ArrayList<>();
+        for (Commercial cndCom : cnd.getCommercialList()) {
+            DocIncComCommercial docCom = new DocIncComCommercial();
+            docCom.setDocIncCom(this);
+            docCom.setCommercialName(cndCom.getCommercialName());
+            docCom.setInn(cndCom.getInn());
+            docCom.setAddress(cndCom.getAddress());
+            docCom.setCommercialShare(cndCom.getCommercialShare());
+            docComs.add(docCom);
+        }
+        setCommercials(docComs);
+    }
 
 }

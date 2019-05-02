@@ -48,6 +48,9 @@ public class DocumentController {
             case 1: {
                 documentService.createDocIncComs(candidateIds);
             }
+            case 2: {
+                documentService.createDocINNs(candidateIds);
+            }
         }
     }
 

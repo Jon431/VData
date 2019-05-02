@@ -1,8 +1,6 @@
 package com.ufu.vdata.service;
 
 import com.ufu.vdata.entity.Candidate;
-import com.ufu.vdata.entity.Commercial;
-import com.ufu.vdata.entity.Income;
 import com.ufu.vdata.entity.document.*;
 import com.ufu.vdata.repository.CandidateListRepository;
 import com.ufu.vdata.repository.DocINNListRepository;
@@ -58,38 +56,17 @@ public class DocumentService {
     public void createDocIncComs(List<String> cndIds) {
         for (String id : cndIds) {
             Candidate cnd = candidateListRepository.findById(UUID.fromString(id)).orElseThrow(() -> new IllegalArgumentException("Not found candidate " + id));
-            DocIncCom dnc = new DocIncCom();
-            dnc.setCandidate(cnd);
-            dnc.setCandidateFirstName(cnd.getFirstName());
-            dnc.setCandidateLastName(cnd.getLastName());
-            dnc.setCandidatePatronymic(cnd.getPatronymic());
-            dnc.setElectionName(cnd.getElection().toString());
-            dnc.setDocumentType(cnd.getDocumentType());
-            dnc.setDocumentNumber(cnd.getDocumentNumber());
-            dnc.setInn(cnd.getInn());
-            ArrayList<DocIncComIncome> docIncomes = new ArrayList<>();
-            for (Income cndIncome : cnd.getIncomeList()) {
-                DocIncComIncome docIncome = new DocIncComIncome();
-                docIncome.setIncomeSource(cndIncome.getIncomeSource());
-                docIncome.setAmount(cndIncome.getAmount());
-                docIncome.setDocIncCom(dnc);
-                docIncomes.add(docIncome);
-            }
-            dnc.setIncomes(docIncomes);
-            ArrayList<DocIncComCommercial> docComs = new ArrayList<>();
-            for (Commercial cndCom : cnd.getCommercialList()) {
-                DocIncComCommercial docCom = new DocIncComCommercial();
-                docCom.setDocIncCom(dnc);
-                docCom.setCommercialName(cndCom.getCommercialName());
-                docCom.setInn(cndCom.getInn());
-                docCom.setAddress(cndCom.getAddress());
-                docCom.setCommercialShare(cndCom.getCommercialShare());
-                docComs.add(docCom);
-            }
-            dnc.setCommercials(docComs);
-            docIncComRepository.save(dnc);
+            docIncComRepository.save(new DocIncCom(cnd));
         }
         docIncComRepository.flush();
+    }
+
+    public void createDocINNs(List<String> cndIds) {
+        for (String id : cndIds) {
+            Candidate cnd = candidateListRepository.findById(UUID.fromString(id)).orElseThrow(() -> new IllegalArgumentException("Not found candidate " + id));
+            docINNListRepository.save(new DocINN(cnd));
+        }
+        docINNListRepository.flush();
     }
 
 
