@@ -38,6 +38,9 @@ public class DocumentController {
 
     else if (type==null&&status==null&&dateFrom!=null&&dateTo!=null)
         return documentService.getAllByDateCreated(dateFrom,dateTo);
+    
+    else if (type!=null&&status!=null&&dateFrom==null&&dateTo==null)
+        return documentService.getAllByTypeAndStatus(type, status);
     else return null;
     }
 

@@ -14,4 +14,5 @@ public interface DocINNListRepository extends JpaRepository<DocINN, UUID> {
     @Query("select d from DocINN d")
     List<Document> getAll();
     List<Document>getAllByDateCreatedBetween(Date date1, Date date2);
+    List<Document>getAllByTypeAndStatus(Byte type, Byte status);
 }

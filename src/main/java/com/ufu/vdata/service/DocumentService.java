@@ -8,6 +8,7 @@ import com.ufu.vdata.repository.DocIncComRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,6 +45,12 @@ public class DocumentService {
 
         List<Document> result = docIncComRepository.getAllByStatus(status);
         result.addAll(docINNListRepository.getAllByStatus(status));
+        return result;
+    }
+
+    public List<Document> getAllByTypeAndStatus(Byte type, Byte status) {
+        List<Document> result = docIncComRepository.getAllByTypeAndStatus(type, status);
+        result.addAll(docINNListRepository.getAllByTypeAndStatus(type, status));
         return result;
     }
 
