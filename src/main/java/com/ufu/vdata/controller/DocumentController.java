@@ -38,7 +38,7 @@ public class DocumentController {
 
     else if (type==null&&status==null&&dateFrom!=null&&dateTo!=null)
         return documentService.getAllByDateCreated(dateFrom,dateTo);
-    
+
     else if (type!=null&&status!=null&&dateFrom==null&&dateTo==null)
         return documentService.getAllByTypeAndStatus(type, status);
     else return null;
@@ -54,7 +54,17 @@ public class DocumentController {
             case 2: {
                 documentService.createDocINNs(candidateIds);
             }
+            default: {
+                throw new IllegalArgumentException("Type " + type + " not found. Please use valid document type.");
+            }
         }
     }
+    @RequestMapping(method = RequestMethod.PUT)
+    void operateDocuments(@RequestParam(value = "do") String doo, @RequestBody ArrayList<String> documentIds) {
+        if (doo.equals("send")) {
+            documentService.sendDocuments(documentIds);
+        }
+        else throw new IllegalArgumentException("Action " + doo + " not found. Please use valid action type.");
+     }
 
 }

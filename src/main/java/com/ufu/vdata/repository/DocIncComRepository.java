@@ -17,4 +17,5 @@ public interface DocIncComRepository extends JpaRepository<DocIncCom, UUID> {
     List<Document>getAll();
     List<Document>getAllByDateCreatedBetween(Date date1, Date date2);
     List<Document>getAllByTypeAndStatus(Byte type, Byte status);
+    Document getById(UUID id);
 }

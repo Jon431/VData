@@ -8,11 +8,7 @@ import com.ufu.vdata.repository.DocIncComRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.print.Doc;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class DocumentService {
@@ -62,7 +58,7 @@ public class DocumentService {
 
     public void createDocIncComs(List<String> cndIds) {
         for (String id : cndIds) {
-            Candidate cnd = candidateListRepository.findById(UUID.fromString(id)).orElseThrow(() -> new IllegalArgumentException("Not found candidate " + id));
+            Candidate cnd = candidateListRepository.findById(UUID.fromString(id)).orElseThrow(() -> new IllegalArgumentException("Not found candidate with ID: " + id));
             docIncComRepository.save(new DocIncCom(cnd));
         }
         docIncComRepository.flush();
@@ -70,10 +66,28 @@ public class DocumentService {
 
     public void createDocINNs(List<String> cndIds) {
         for (String id : cndIds) {
-            Candidate cnd = candidateListRepository.findById(UUID.fromString(id)).orElseThrow(() -> new IllegalArgumentException("Not found candidate " + id));
+            Candidate cnd = candidateListRepository.findById(UUID.fromString(id)).orElseThrow(() -> new IllegalArgumentException("Not found candidate with ID: " + id));
             docINNListRepository.save(new DocINN(cnd));
         }
         docINNListRepository.flush();
+    }
+
+    public void sendDocuments(List<String> docIds) {
+        for (String docId : docIds) {
+            Optional<DocIncCom> docIncCom = docIncComRepository.findById(UUID.fromString(docId));
+            if(docIncCom.isPresent()) {
+                docIncCom.get().setStatus(Byte.parseByte("2"));
+                docIncComRepository.save(docIncCom.get());
+            }
+            else {
+                Optional<DocINN> docINN = docINNListRepository.findById(UUID.fromString(docId));
+                if (docINN.isPresent()) {
+                    docINN.get().setStatus(Byte.parseByte("2"));
+                    docINNListRepository.save(docINN.get());
+                }
+                else { throw new IllegalArgumentException("Not found document with ID: " + docId); }
+            }
+        }
     }
 
 
