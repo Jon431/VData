@@ -56,38 +56,57 @@ public class DocumentService {
         return result;
     }
 
-    public void createDocIncComs(List<String> cndIds) {
-        for (String id : cndIds) {
-            Candidate cnd = candidateListRepository.findById(UUID.fromString(id)).orElseThrow(() -> new IllegalArgumentException("Not found candidate with ID: " + id));
+    public void createDocIncComs(List<UUID> cndIds) {
+        for (UUID id : cndIds) {
+            Candidate cnd = candidateListRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Not found candidate with ID: " + id));
             docIncComRepository.save(new DocIncCom(cnd));
         }
         docIncComRepository.flush();
     }
 
-    public void createDocINNs(List<String> cndIds) {
-        for (String id : cndIds) {
-            Candidate cnd = candidateListRepository.findById(UUID.fromString(id)).orElseThrow(() -> new IllegalArgumentException("Not found candidate with ID: " + id));
+    public void createDocINNs(List<UUID> cndIds) {
+        for (UUID id : cndIds) {
+            Candidate cnd = candidateListRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Not found candidate with ID: " + id));
             docINNListRepository.save(new DocINN(cnd));
         }
         docINNListRepository.flush();
     }
 
-    public void sendDocuments(List<String> docIds) {
-        for (String docId : docIds) {
-            Optional<DocIncCom> docIncCom = docIncComRepository.findById(UUID.fromString(docId));
+    public void sendDocuments(List<UUID> docIds) {
+        for (UUID docId : docIds) {
+            Optional<DocIncCom> docIncCom = docIncComRepository.findById(docId);
             if(docIncCom.isPresent()) {
-                docIncCom.get().setStatus(Byte.parseByte("2"));
-                docIncCom.get().setDateSent(new Date());
-                docIncComRepository.save(docIncCom.get());
+                DocIncCom dnc = docIncCom.get();
+                dnc.setStatus(Byte.parseByte("2"));
+                dnc.setDateSent(new Date());
+                docIncComRepository.save(dnc);
             }
             else {
-                Optional<DocINN> docINN = docINNListRepository.findById(UUID.fromString(docId));
+                Optional<DocINN> docINN = docINNListRepository.findById(docId);
                 if (docINN.isPresent()) {
-                    docINN.get().setStatus(Byte.parseByte("2"));
-                    docINN.get().setDateSent(new Date());
-                    docINNListRepository.save(docINN.get());
+                    DocINN dnn = docINN.get();
+                    dnn.setStatus(Byte.parseByte("2"));
+                    dnn.setDateSent(new Date());
+                    docINNListRepository.save(dnn);
                 }
                 else { throw new IllegalArgumentException("Not found document with ID: " + docId); }
+            }
+        }
+    }
+
+    public void deleteDocuments(List<UUID> docIds) { // TODO REWRITE IT!
+        for (UUID id : docIds) {
+            try {
+            docIncComRepository.deleteById(id);
+            }
+            catch (Exception e) {
+
+            }
+            try {
+                docINNListRepository.deleteById(id);
+            }
+            catch (Exception e) {
+
             }
         }
     }

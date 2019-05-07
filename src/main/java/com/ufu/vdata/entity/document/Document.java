@@ -23,10 +23,10 @@ public abstract class Document {
     @Column(name = "date_created")
     private Date dateCreated;
 
-    @Column(name = "date_sent", updatable = false)
+    @Column(name = "date_sent")
     private Date dateSent;
 
-    @Column(name = "date_answered", updatable = false)
+    @Column(name = "date_answered")
     private Date dateAnswered;
 
     @Column(name = "status")

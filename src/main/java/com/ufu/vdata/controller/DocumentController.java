@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/documents")
@@ -46,7 +47,7 @@ public class DocumentController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST)
-    void createDocuments(@RequestParam(value = "type") Byte type, @RequestBody ArrayList<String> candidateIds) {
+    void createDocuments(@RequestParam(value = "type") Byte type, @RequestBody ArrayList<UUID> candidateIds) {
         switch(type) {
             case 1: {
                 documentService.createDocIncComs(candidateIds);
@@ -62,11 +63,17 @@ public class DocumentController {
         }
     }
     @RequestMapping(method = RequestMethod.PUT)
-    void operateDocuments(@RequestParam(value = "do") String doo, @RequestBody ArrayList<String> documentIds) {
+    void operateDocuments(@RequestParam(value = "do") String doo, @RequestBody ArrayList<UUID> documentIds) {
         if (doo.equals("send")) {
             documentService.sendDocuments(documentIds);
         }
         else throw new IllegalArgumentException("Action " + doo + " not found. Please use valid action type.");
+     }
+
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    @RequestMapping(method = RequestMethod.DELETE)
+    void deleteDocuments(@RequestBody ArrayList<UUID> documentIds) {
+        documentService.deleteDocuments(documentIds);
      }
 
 }
