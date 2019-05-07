@@ -50,9 +50,11 @@ public class DocumentController {
         switch(type) {
             case 1: {
                 documentService.createDocIncComs(candidateIds);
+                break;
             }
             case 2: {
                 documentService.createDocINNs(candidateIds);
+                break;
             }
             default: {
                 throw new IllegalArgumentException("Type " + type + " not found. Please use valid document type.");

@@ -77,12 +77,14 @@ public class DocumentService {
             Optional<DocIncCom> docIncCom = docIncComRepository.findById(UUID.fromString(docId));
             if(docIncCom.isPresent()) {
                 docIncCom.get().setStatus(Byte.parseByte("2"));
+                docIncCom.get().setDateSent(new Date());
                 docIncComRepository.save(docIncCom.get());
             }
             else {
                 Optional<DocINN> docINN = docINNListRepository.findById(UUID.fromString(docId));
                 if (docINN.isPresent()) {
                     docINN.get().setStatus(Byte.parseByte("2"));
+                    docINN.get().setDateSent(new Date());
                     docINNListRepository.save(docINN.get());
                 }
                 else { throw new IllegalArgumentException("Not found document with ID: " + docId); }
